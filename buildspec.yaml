@@ -5,6 +5,7 @@ env:
     DOCKER_REGISTRY_USERNAME: /cicd/docker-credentials/username
     DOCKER_REGISTRY_PASSWORD: /cicd/docker-credentials/password
     DOCKER_REGISTRY_URL: /cicd/docker-registry/url
+
 phases:
   install:
     runtime-versions:
@@ -14,14 +15,13 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - echo "Performing Trivy file scan before building the image..."
-
   build:
-    commands: |
-      echo "Running tests..."
-      echo "Building Docker image..."
-      echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
-      docker build -t bharath0812/node:1.1 .
-      docker push bharah0812/node:1.1
+    commands:
+      - echo "Running tests..."
+      - echo "Building Docker image..."
+      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
+      - docker build -t bharath0812/node:1.1 .
+      - docker push bharath0812/node:1.1
 post_build:
-  commands: |
-    echo "build done"
+  commands:
+    - echo "build done"
